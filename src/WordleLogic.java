@@ -36,12 +36,29 @@ public class WordleLogic {
     }
 
     private void printBoard() {
-        // WRITE THIS METHOD
         for (Space[] row : board) {
             for (Space col : row) {
                 System.out.print(col.getSymbol());
             }
             System.out.println();
+        }
+    }
+
+    private void play() {
+        int index = 0;
+        while (!(board[5][1] instanceof Character)) {
+
+        }
+    }
+
+    private boolean checkRow(int index) {
+        String word = "";
+        for (Space col : board[index]) {
+            if (col instanceof Character) {
+                word += ((Character) col).getSymbol();
+            } else {
+                word += col.getSymbol();
+            }
         }
     }
 }

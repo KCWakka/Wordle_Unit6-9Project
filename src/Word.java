@@ -18,7 +18,7 @@ public class Word {
 
     public void readData() {
         try {
-            File myfile = new File("src\\shoppinglist.txt");
+            File myfile = new File("src\\words.txt");
             Scanner fileScanner = new Scanner(myfile);
             while (fileScanner.hasNext()) {
                 String data = fileScanner.nextLine();
