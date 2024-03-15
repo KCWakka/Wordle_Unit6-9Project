@@ -1,19 +1,30 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 public class WordleLogic {
     private Space[][] board;
     private Scanner scan;
     private Word word;
+    private ArrayList<String> letterUsed;
     public WordleLogic() {
         scan = new Scanner(System.in);
         word = new Word();
+        letterUsed = new ArrayList<>();
         word.readData();
         introduce();
+        play();
     }
 
     private void introduce() {
+        System.out.println(Color.BLUE + " __      __                .___.__          \n" +
+                "/  \\    /  \\___________  __| _/|  |   ____  \n" +
+                "\\   \\/\\/   /  _ \\_  __ \\/ __ | |  | _/ __ \\ \n" +
+                " \\        (  <_> )  | \\/ /_/ | |  |_\\  ___/ \n" +
+                "  \\__/\\  / \\____/|__|  \\____ | |____/\\___  >\n" +
+                "       \\/                   \\/           \\/ " + Color.RESET);
         System.out.println("Welcome to the game of wordle! Here are some Instruction for you to know!");
         System.out.println("Each Color have their own meaning. Red mean that the character isn't in the word or there is no more of that character.");
         System.out.println("Green mean the word have that character and is at the correct place. Yellow mean the word have that character but it isn't at that position.");
+        System.out.println("Your goal of this game is to find out the word before you run out of tries by using information you obtain by the colors.");
         System.out.print("Please enter the length of the word you want to do. It must be above 3 letter! ");
         int length = scan.nextInt();
         scan.nextLine();
@@ -38,7 +49,11 @@ public class WordleLogic {
     private void printBoard() {
         for (Space[] row : board) {
             for (Space col : row) {
-                System.out.print(col.getSymbol());
+                if (col instanceof  Character) {
+                    System.out.print(setColor((Character) col));
+                } else {
+                    System.out.print(col.getSymbol());
+                }
             }
             System.out.println();
         }
@@ -46,8 +61,14 @@ public class WordleLogic {
 
     private void play() {
         int index = 0;
-        while (!(board[5][1] instanceof Character)) {
-
+        while (index < board.length && !checkRow(index)) {
+            printBoard();
+            System.out.println(word.getWord());
+            System.out.print("Please enter a word: ");
+            String word = scan.nextLine();
+            index += processChoice(word, index);
+            System.out.println("Letter used: ");
+            printLetterUsed();
         }
     }
 
@@ -60,5 +81,54 @@ public class WordleLogic {
                 word += col.getSymbol();
             }
         }
+        return word.equals(this.word.getWord());
     }
+
+    private String setColor(Character word) {
+        if (word.getSymbol().equals(this.word.getWord().substring(word.getIndex(), word.getIndex() + 1))) {
+            return Color.GREEN + word.getSymbol() + Color.RESET;
+        } else if (this.word.getWord().contains(word.getSymbol())) {
+            return Color.YELLOW + word.getSymbol() + Color.RESET;
+        } else {
+            return Color.RED + word.getSymbol() + Color.RESET;
+        }
+    }
+    private int processChoice(String word, int index) {
+        if (word.length() != this.word.getWord().length()) {
+            System.out.println("The word you select is either too short or too long to be input!");
+            return 0;
+        } else if (!this.word.getWordsList().contains(word)){
+            System.out.println("The word you select is not a real word!");
+        } else {
+            for (int col = 0; col < board[index].length; col++) {
+                Character character = new Character(word, col);
+                if (!letterUsed.contains(character.getSymbol())) {
+                    letterUsed.add(character.getSymbol());
+                }
+                board[index][col] = character;
+            }
+            return 1;
+        }
+        return 0;
+    }
+
+    private void printLetterUsed() {
+        selectionSortletterUsed();
+        for (String s : letterUsed) {
+            System.out.println(s);
+        }
+    }
+    private void selectionSortletterUsed() {
+        for (int i = 0; i < letterUsed.size()- 1; i++) {
+            int min = i;
+            for (int f = i + 1; f < letterUsed.size(); f++) {
+                String value = letterUsed.get(f);
+                if (value.compareTo(letterUsed.get(min)) < 0) {
+                    min = f;
+                }
+            }
+            letterUsed.set(i, letterUsed.set(min, letterUsed.get(i)));
+        }
+    }
+
 }

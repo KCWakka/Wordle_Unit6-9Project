@@ -16,6 +16,10 @@ public class Word {
         return word;
     }
 
+    public ArrayList<String> getWordsList() {
+        return wordsList;
+    }
+
     public void readData() {
         try {
             File myfile = new File("src\\words.txt");

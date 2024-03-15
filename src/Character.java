@@ -9,4 +9,9 @@ public class Character extends Space{
     public String getSymbol() {
         return super.getSymbol().substring(index, index + 1);
     }
+
+    public int getIndex() {
+        return index;
+    }
+
 }
