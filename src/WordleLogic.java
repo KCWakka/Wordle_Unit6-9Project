@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class WordleLogic {
@@ -5,22 +6,26 @@ public class WordleLogic {
     private Scanner scan;
     private Word word;
     private ArrayList<String> letterUsed;
+    private ArrayList<WordAmount> amountOfLetter;
     public WordleLogic() {
         scan = new Scanner(System.in);
         word = new Word();
         letterUsed = new ArrayList<>();
+        amountOfLetter = new ArrayList<>();
         word.readData();
         introduce();
         play();
     }
 
     private void introduce() {
-        System.out.println(Color.BLUE + " __      __                .___.__          \n" +
-                "/  \\    /  \\___________  __| _/|  |   ____  \n" +
-                "\\   \\/\\/   /  _ \\_  __ \\/ __ | |  | _/ __ \\ \n" +
-                " \\        (  <_> )  | \\/ /_/ | |  |_\\  ___/ \n" +
-                "  \\__/\\  / \\____/|__|  \\____ | |____/\\___  >\n" +
-                "       \\/                   \\/           \\/ " + Color.RESET);
+        System.out.println(Color.BLUE + "\n" +
+                "██╗    ██╗ ██████╗ ██████╗ ██████╗ ██╗     ███████╗\n" +
+                "██║    ██║██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝\n" +
+                "██║ █╗ ██║██║   ██║██████╔╝██║  ██║██║     █████╗  \n" +
+                "██║███╗██║██║   ██║██╔══██╗██║  ██║██║     ██╔══╝  \n" +
+                "╚███╔███╔╝╚██████╔╝██║  ██║██████╔╝███████╗███████╗\n" +
+                " ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚══════╝╚══════╝\n" +
+                "                                                   \n" + Color.RESET);
         System.out.println("Welcome to the game of wordle! Here are some Instruction for you to know!");
         System.out.println("Each Color have their own meaning. Red mean that the character isn't in the word or there is no more of that character.");
         System.out.println("Green mean the word have that character and is at the correct place. Yellow mean the word have that character but it isn't at that position.");
@@ -50,7 +55,22 @@ public class WordleLogic {
         for (Space[] row : board) {
             for (Space col : row) {
                 if (col instanceof  Character) {
-                    System.out.print(setColor((Character) col));
+                    int index = -1;
+                    for (int i = 0; i < amountOfLetter.size(); i++) {
+                        if (amountOfLetter.get(i).getLetter().equals(((Character) col).getSymbol())) {
+                            index = i;
+                        }
+                    }
+                    if (index >= 0 ) {
+                        System.out.print(setColor((Character) col));
+                    } else {
+                        if (amountOfLetter.get(index).getAmount() != 0) {
+                            System.out.print(setColor((Character) col));
+                            amountOfLetter.get(index).removeAmount();
+                        } else {
+                            System.out.println(Color.RED + ((Character) col).getSymbol() + Color.RESET);
+                        }
+                    }
                 } else {
                     System.out.print(col.getSymbol());
                 }
@@ -62,6 +82,7 @@ public class WordleLogic {
     private void play() {
         int index = 0;
         while (index < board.length && !checkRow(index)) {
+            wordAmount();
             printBoard();
             System.out.println(word.getWord());
             System.out.print("Please enter a word: ");
@@ -130,5 +151,18 @@ public class WordleLogic {
             letterUsed.set(i, letterUsed.set(min, letterUsed.get(i)));
         }
     }
-
+    private void wordAmount() {
+        WordAmount first = new WordAmount(word.getWord().substring(0, 1));
+        amountOfLetter.add(first);
+        for (int i = 1; i < word.getWord().length(); i++) {
+            for (int f = 0; i < amountOfLetter.size(); f++) {
+                if (amountOfLetter.get(f).getLetter().equals(word.getWord().substring(i, i + 1))) {
+                    amountOfLetter.get(f).addAmount();
+                } else {
+                    WordAmount temp = new WordAmount(word.getWord().substring(i, i + 1));
+                    amountOfLetter.add(temp);
+                }
+            }
+        }
+    }
 }
