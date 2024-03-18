@@ -155,7 +155,7 @@ public class WordleLogic {
         WordAmount first = new WordAmount(word.getWord().substring(0, 1));
         amountOfLetter.add(first);
         for (int i = 1; i < word.getWord().length(); i++) {
-            for (int f = 0; i < amountOfLetter.size(); f++) {
+            for (int f = 0; f < amountOfLetter.size(); f++) {
                 if (amountOfLetter.get(f).getLetter().equals(word.getWord().substring(i, i + 1))) {
                     amountOfLetter.get(f).addAmount();
                 } else {
