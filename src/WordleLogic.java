@@ -61,14 +61,14 @@ public class WordleLogic {
                             index = i;
                         }
                     }
-                    if (index >= 0 ) {
+                    if (index < 0 ) {
                         System.out.print(setColor((Character) col));
                     } else {
                         if (amountOfLetter.get(index).getAmount() != 0) {
                             System.out.print(setColor((Character) col));
                             amountOfLetter.get(index).removeAmount();
                         } else {
-                            System.out.println(Color.RED + ((Character) col).getSymbol() + Color.RESET);
+                            System.out.print(Color.RED + ((Character) col).getSymbol() + Color.RESET);
                         }
                     }
                 } else {
@@ -152,6 +152,7 @@ public class WordleLogic {
         }
     }
     private void wordAmount() {
+        amountOfLetter.clear();
         WordAmount first = new WordAmount(word.getWord().substring(0, 1));
         amountOfLetter.add(first);
         for (int i = 1; i < word.getWord().length(); i++) {
@@ -161,8 +162,12 @@ public class WordleLogic {
                 } else {
                     WordAmount temp = new WordAmount(word.getWord().substring(i, i + 1));
                     amountOfLetter.add(temp);
+                    f++;
                 }
             }
+        }
+        for (WordAmount test : amountOfLetter) {
+            System.out.println(test.getLetter());
         }
     }
 }
