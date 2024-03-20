@@ -59,6 +59,7 @@ public class WordleLogic {
                     for (int i = 0; i < amountOfLetter.size(); i++) {
                         if (amountOfLetter.get(i).getLetter().equals(((Character) col).getSymbol())) {
                             index = i;
+                            break;
                         }
                     }
                     if (index < 0 ) {
@@ -156,18 +157,24 @@ public class WordleLogic {
         WordAmount first = new WordAmount(word.getWord().substring(0, 1));
         amountOfLetter.add(first);
         for (int i = 1; i < word.getWord().length(); i++) {
+            int index = -1;
             for (int f = 0; f < amountOfLetter.size(); f++) {
                 if (amountOfLetter.get(f).getLetter().equals(word.getWord().substring(i, i + 1))) {
-                    amountOfLetter.get(f).addAmount();
+                    index = f;
+                    break;
+                }
+            }
+                if (index != -1) {
+                    amountOfLetter.get(index).addAmount();
                 } else {
                     WordAmount temp = new WordAmount(word.getWord().substring(i, i + 1));
                     amountOfLetter.add(temp);
-                    f++;
+                    break;
                 }
-            }
         }
         for (WordAmount test : amountOfLetter) {
-            System.out.println(test.getLetter());
+            System.out.print(test.getLetter());
+            System.out.println(test.getAmount());
         }
     }
 }

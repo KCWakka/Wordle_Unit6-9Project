@@ -3,7 +3,7 @@ public class WordAmount {
     private int amount;
     public WordAmount(String letter) {
         this.letter = letter;
-        amount = 0;
+        amount = 1;
     }
 
     public String getLetter() {
