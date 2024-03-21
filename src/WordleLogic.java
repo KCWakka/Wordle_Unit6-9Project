@@ -169,7 +169,6 @@ public class WordleLogic {
                 } else {
                     WordAmount temp = new WordAmount(word.getWord().substring(i, i + 1));
                     amountOfLetter.add(temp);
-                    break;
                 }
         }
         for (WordAmount test : amountOfLetter) {
