@@ -57,7 +57,7 @@ public class WordleLogic {
                 if (col instanceof  Character) {
                     int index = -1;
                     for (int i = 0; i < amountOfLetter.size(); i++) {
-                        if (amountOfLetter.get(i).getLetter().equals(((Character) col).getSymbol())) {
+                        if (amountOfLetter.get(i).getLetter().equals(col.getSymbol())) {
                             index = i;
                             break;
                         }
@@ -76,33 +76,41 @@ public class WordleLogic {
                     System.out.print(col.getSymbol());
                 }
             }
+            wordAmount();
             System.out.println();
         }
     }
 
     private void play() {
         int index = 0;
-        while (index < board.length && !checkRow(index)) {
+        while (index < board.length && !checkRow(index - 1)) {
             wordAmount();
             printBoard();
-            System.out.println(word.getWord());
             System.out.print("Please enter a word: ");
             String word = scan.nextLine();
             index += processChoice(word, index);
             System.out.println("Letter used: ");
             printLetterUsed();
         }
+        printBoard();
+        if (index < board.length) {
+            System.out.println("You win! You guess the word using " + index + " words!" + "Here are the letter you used!");
+            printLetterUsed();
+        } else {
+            System.out.println("You lose! The word was " + Color.BLUE + word.getWord() + " Try again next time! Here are the letter you used!");
+            printLetterUsed();
+        }
     }
 
     private boolean checkRow(int index) {
+        if (index < 0 ) {
+            return false;
+        }
         String word = "";
         for (Space col : board[index]) {
-            if (col instanceof Character) {
-                word += ((Character) col).getSymbol();
-            } else {
                 word += col.getSymbol();
-            }
         }
+        System.out.println(word);
         return word.equals(this.word.getWord());
     }
 
@@ -170,10 +178,6 @@ public class WordleLogic {
                     WordAmount temp = new WordAmount(word.getWord().substring(i, i + 1));
                     amountOfLetter.add(temp);
                 }
-        }
-        for (WordAmount test : amountOfLetter) {
-            System.out.print(test.getLetter());
-            System.out.println(test.getAmount());
         }
     }
 }
