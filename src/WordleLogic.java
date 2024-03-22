@@ -110,7 +110,6 @@ public class WordleLogic {
         for (Space col : board[index]) {
                 word += col.getSymbol();
         }
-        System.out.println(word);
         return word.equals(this.word.getWord());
     }
 
