@@ -94,10 +94,10 @@ public class WordleLogic {
         }
         printBoard();
         if (checkRow(index - 1)) {
-            System.out.println("You win! You guess the word using " + index + " words!" + "Here are the letter you used!");
+            System.out.println("You win! You guess the word using " + Color.BLUE + index + Color.RESET + " words!" + "Here are the letter you used!" );
             printLetterUsed();
         } else {
-            System.out.println("You lose! The word was " + Color.BLUE + word.getWord() + " Try again next time! Here are the letter you used!");
+            System.out.println("You lose! The word was " + Color.BLUE + word.getWord() + " Try again next time! Here are the letter you used!" + Color.RESET);
             printLetterUsed();
         }
     }
