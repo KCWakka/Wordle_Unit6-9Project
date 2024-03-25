@@ -93,7 +93,7 @@ public class WordleLogic {
             printLetterUsed();
         }
         printBoard();
-        if (index < board.length) {
+        if (checkRow(index - 1)) {
             System.out.println("You win! You guess the word using " + index + " words!" + "Here are the letter you used!");
             printLetterUsed();
         } else {
